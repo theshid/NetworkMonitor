@@ -14,7 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.networktest.util.Common
 import timber.log.Timber
 
-object Template {
+object NetworkUtils {
 
 
     fun getNetworkType(context: Context):LiveData<String>{

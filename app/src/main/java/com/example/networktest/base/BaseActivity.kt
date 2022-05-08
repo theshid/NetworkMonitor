@@ -17,7 +17,7 @@ import com.example.networktest.receivers.MyReceiver
 import com.example.networktest.showSnackbar
 import com.example.networktest.showToast
 import com.example.networktest.util.Common
-import com.example.networktest.util.Template
+import com.example.networktest.util.NetworkUtils
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -59,14 +59,14 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     private fun onNetworkChange(block: (Boolean) -> Unit) {
-        Template.getNetworkStatus(this)
+        NetworkUtils.getNetworkStatus(this)
             .observe(this, Observer { isConnected ->
                 block(isConnected)
             })
     }
 
     private fun onNetworkTypeChange2(block: (String) -> Unit) {
-        Template.getNetworkType(this).observe(this, Observer { connectionType ->
+        NetworkUtils.getNetworkType(this).observe(this, Observer { connectionType ->
             block(connectionType)
         })
     }
