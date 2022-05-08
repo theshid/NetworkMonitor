@@ -1,15 +1,11 @@
 package com.example.networktest
 
 import android.app.Application
-import androidx.lifecycle.ProcessLifecycleOwner
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.FormatStrategy
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 class App : Application() {
 
