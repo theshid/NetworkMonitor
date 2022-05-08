@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NetworkTest</string>
+    <string name="permisson_not_granted">Permission not granted. Please try again</string>
+</resources>
