@@ -11,9 +11,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.example.networktest.receivers.MyReceiver
 import com.example.networktest.PermissionUtils
 import com.example.networktest.R
+import com.example.networktest.receivers.MyReceiver
 import com.example.networktest.showSnackbar
 import com.example.networktest.showToast
 import com.example.networktest.util.Common
@@ -28,23 +28,34 @@ open class BaseActivity : AppCompatActivity() {
     lateinit var myJob: Job
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val rootView = findViewById<View>(android.R.id.content)
         registerReceiver(broadcastReceiver, Common.intentFilter)
-        checkIfPermissionIsActive()
-        onNetworkChange { isConnected ->
-            if (isConnected) {
-                showSnackbar(rootView,"Connected")
-            } else {
-                showSnackbar(rootView,"Not Connected",true)
-            }
-        }
+        monitorNetworkConnectivity()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        checkIfPermissionIsActive()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        myJob.cancel()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        myJob.cancel()
         unregisterReceiver(broadcastReceiver)
+    }
+
+    private fun monitorNetworkConnectivity() {
+        val rootView = findViewById<View>(android.R.id.content)
+        onNetworkChange { isConnected ->
+            if (isConnected) {
+                showSnackbar(rootView, "Connected")
+            } else {
+                showSnackbar(rootView, "Not Connected", true)
+            }
+        }
     }
 
     private fun onNetworkChange(block: (Boolean) -> Unit) {
@@ -64,7 +75,6 @@ open class BaseActivity : AppCompatActivity() {
     protected fun startRepeatingJob(timeInterval: Long): Job {
         return CoroutineScope(Dispatchers.IO).launch {
             while (NonCancellable.isActive) {
-                // add your task here
                 monitor()
                 Timber.d("test")
                 delay(timeInterval)
